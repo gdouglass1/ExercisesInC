@@ -32,6 +32,6 @@ int main()
             count--;
         }
         printf("Current count: %i\n", count);
-    } while (card_name[0] != 'x');
+    } while (card_name[0] != 'X');
     return 0;
 }
