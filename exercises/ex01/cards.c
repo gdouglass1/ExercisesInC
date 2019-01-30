@@ -6,6 +6,18 @@
  * Summary of File:
       This file contains code modified from the code on page 37 of Head First C.
       The original function is refactored and splitted into three functions.
+      This code has been able compile without warnings using these flags:
+        gcc -ansi -pedantic -Wall cards.c
+      * -ansi flag: tells the compiler to implement the ANSI language option.
+          This turns off certain "features" of GCC which are incompatible with
+          the ANSI standard.
+      * -pedantic: used in conjunction with -ansi, this tells the compiler to
+          be adhere strictly to the ANSI standard, rejecting any code which is
+          not compliant.
+      * -Wall: tells the compiler to implement 'all' Warning options. Warnings
+          are diagnostic messages that report constructions which are not
+          inherently erroneous but which are risky or suggest there may have
+          been an error.
 */
 
 #include <stdio.h>
@@ -46,9 +58,10 @@ int main()
 {
     char card_name[3];
     do {
+        int val;
         puts("Enter the card_name: ");
         scanf("%2s", card_name);
-        int val = UpdateValue(card_name);
+        val = UpdateValue(card_name);
         if (CheckInvalidCase(val)){
           continue;
         }
@@ -65,7 +78,7 @@ void UpdateCount(int val){
         count--;
     }
     printf("Current count: %i\n", count);
-};
+}
 
 int CheckInvalidCase(int val){
   if((val < 1) || (val > 11)){
@@ -75,7 +88,7 @@ int CheckInvalidCase(int val){
   else {
     return 0;
   }
-};
+}
 
 int UpdateValue(char card_name[3]){
   int val;
@@ -93,4 +106,4 @@ int UpdateValue(char card_name[3]){
     break;
   }
   return val;
-};
+}
