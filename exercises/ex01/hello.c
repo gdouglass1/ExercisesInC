@@ -24,6 +24,8 @@ Question 3: The line movl	$5, -4(%rbp) becomes movl	$5, %edx which is shorter.
 .LHOTB1:
 	.p2align 4,,15
 	.globl	main" are added. printf in the assembly becomes __printf_chk.
+subq(16) for no optimization and subq(8) for optimization which means the memory allocated 
+decreases from 16 bytes to 8 bytes.
 
 Question 4
   With optimization, instead of sotring the value of both x and y, the value of
