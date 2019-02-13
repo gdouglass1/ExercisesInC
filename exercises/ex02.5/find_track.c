@@ -7,6 +7,7 @@ Modified version of an example from Chapter 2.5 of Head First C.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "regex.h"
 
 #define NUM_TRACKS 5
 
@@ -37,8 +38,25 @@ void find_track(char search_for[])
 // Prints track number and title.
 void find_track_regex(char pattern[])
 {
-    // TODO: fill this in
-}
+  regex_t regexCompiled;
+  size_t maxMatches = 1;
+  regmatch_t groupArray[maxMatches+1];
+
+  if (regcomp(&regexCompiled, pattern, 0))
+  {
+    printf("Could not compile regular expression.\n");
+  }
+  else{
+    int i;
+    for (i=0; i<NUM_TRACKS; i++) {
+        if(regexec(&regexCompiled, tracks[i], maxMatches, groupArray, 0) == 0){
+          printf("Track %i: '%s'\n", i, tracks[i]);
+        }
+        }
+    regfree(&regexCompiled);
+  }
+  }
+
 
 // Truncates the string at the first newline, if there is one.
 void rstrip(char s[])
@@ -59,7 +77,7 @@ int main (int argc, char *argv[])
     rstrip(search_for);
 
     find_track(search_for);
-    //find_track_regex(search_for);
+    find_track_regex(search_for);
 
     return 0;
 }
