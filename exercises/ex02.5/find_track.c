@@ -33,22 +33,25 @@ void find_track(char search_for[])
     }
 }
 
-// Finds all tracks that match the given pattern.
+// Finds all tracks that match the given pattern in a regular expression.
 //
 // Prints track number and title.
 void find_track_regex(char pattern[])
 {
-  regex_t regexCompiled;
-  size_t maxMatches = 1;
-  regmatch_t groupArray[maxMatches+1];
+  regex_t regexCompiled; //regex_t object where the function can
+                          //store the compiled regular expression.
+  size_t maxMatches = 1; // The maximum number of matches to record
+  regmatch_t groupArray[maxMatches+1]; // An array of regmatch_t objects where
+                                      // the function can record the matches
 
-  if (regcomp(&regexCompiled, pattern, 0))
+  if (regcomp(&regexCompiled, pattern, 0)) // Compile a regular expression
+                                            // zero is success
   {
     printf("Could not compile regular expression.\n");
+    exit(1);
   }
   else{
-    int i;
-    for (i=0; i<NUM_TRACKS; i++) {
+    for (int i=0; i<NUM_TRACKS; i++) {
         if(regexec(&regexCompiled, tracks[i], maxMatches, groupArray, 0) == 0){
           printf("Track %i: '%s'\n", i, tracks[i]);
         }
@@ -75,8 +78,11 @@ int main (int argc, char *argv[])
     printf("Search for: ");
     fgets(search_for, 80, stdin);
     rstrip(search_for);
-
     find_track(search_for);
+
+    printf("Search for regular expression: ");
+    fgets(search_for, 80, stdin);
+    rstrip(search_for);
     find_track_regex(search_for);
 
     return 0;
