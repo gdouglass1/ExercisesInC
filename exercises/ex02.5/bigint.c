@@ -91,22 +91,21 @@ typedef char * BigInt;
 
 /* add_bigint: Adds two BigInts
 
-Stores the result in z.
+Returns the result instead of taking in an empty buffer.
 
 x: BigInt
 y: BigInt
 carry_in: char
-z: empty buffer
 */
-void add_bigint(BigInt x, BigInt y, char carry_in, BigInt z) {
+BigInt add_bigint(BigInt x, BigInt y, char carry_in) {
     char total, carry_out;
-    int dx=1, dy=1, dz=1;
+    int dx=1, dy=1;
     char a, b;
     /* OPTIONAL TODO: Modify this function to allocate and return z
     *  rather than taking an empty buffer as a parameter.
     *  Hint: you might need a helper function.
     */
-
+    BigInt z = malloc(100);
     if (*x == '\0') {
         a = '0';
         dx = 0;
@@ -127,14 +126,15 @@ void add_bigint(BigInt x, BigInt y, char carry_in, BigInt z) {
     // if total and carry are 0, we're done
     if (total == '0' && carry_out == '0') {
         *z = '\0';
-        return;
+        return z;
     }
     // otherwise store the digit we just computed
 
     *z = total;
 
     // and make a recursive call to fill in the rest.
-    add_bigint(x+dx, y+dy, carry_out, z+dz);
+    strcpy(z+1,add_bigint(x+dx, y+dy, carry_out));
+    return z;
 }
 
 /* print_bigint: Prints the digits of BigInt in the normal order.
@@ -196,9 +196,8 @@ void test_add_bigint() {
 
     BigInt big1 = make_bigint(s);
     BigInt big2 = make_bigint(t);
-    BigInt big3 = malloc(100);
 
-	  add_bigint(big1, big2, '0',big3);
+	  BigInt big3 = add_bigint(big1, big2, '0');
 
     if (strcmp(big3, res) == 0) {
         printf("add_bigint passed\n");
