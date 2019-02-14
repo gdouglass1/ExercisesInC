@@ -102,7 +102,6 @@ void add_bigint(BigInt x, BigInt y, char carry_in, BigInt z) {
     char total, carry_out;
     int dx=1, dy=1, dz=1;
     char a, b;
-
     /* OPTIONAL TODO: Modify this function to allocate and return z
     *  rather than taking an empty buffer as a parameter.
     *  Hint: you might need a helper function.
@@ -131,6 +130,7 @@ void add_bigint(BigInt x, BigInt y, char carry_in, BigInt z) {
         return;
     }
     // otherwise store the digit we just computed
+
     *z = total;
 
     // and make a recursive call to fill in the rest.
@@ -198,10 +198,12 @@ void test_add_bigint() {
     BigInt big2 = make_bigint(t);
     BigInt big3 = malloc(100);
 
-	add_bigint(big1, big2, '0', big3);
+	  add_bigint(big1, big2, '0',big3);
 
     if (strcmp(big3, res) == 0) {
         printf("add_bigint passed\n");
+        //print_bigint(big3);
+        //printf("\n%s",res);
     } else {
         printf("add_bigint failed\n");
     }
