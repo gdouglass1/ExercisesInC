@@ -197,11 +197,7 @@ void test_add_bigint() {
     BigInt big1 = make_bigint(s);
     BigInt big2 = make_bigint(t);
 
-<<<<<<< HEAD
 	  BigInt big3 = add_bigint(big1, big2, '0');
-=======
-    add_bigint(big1, big2, '0', big3);
->>>>>>> 2eca99809659d43435302a0d086cad241177d566
 
     if (strcmp(big3, res) == 0) {
         printf("add_bigint passed\n");
