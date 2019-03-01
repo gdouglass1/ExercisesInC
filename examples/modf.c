@@ -33,6 +33,18 @@ returns: new array, caller must free
 */
 // TODO: Write this function
 
+double* get_int_part(double array[], int length){
+  double *output;
+  double integer;
+  output = (double *)malloc(length*sizeof(double));
+  for (int i = 0; i<length; i++){
+    modf(array[i],&integer);
+    //printf("array: %lf\n",array[i]);
+    output[i] = integer;
+  }
+  return output;
+}
+
 void test_get_int_part()
 {
     double array[] = {1.2, 2.718, 3.1412, 5.6};
@@ -57,6 +69,27 @@ p: location where the address of the frac_array should go
 returns: new array, caller must free
 */
 //TODO: Write this function
+
+double* get_both_parts(double array[], int length, double **p){
+  double *output;
+  double integer;r);
+    output[i] = integer;
+    printf("array: %lf\n",array[i]);
+    *p++:
+  }
+  for(int i = 0; i<length; i++){
+    **p = modf(array[i],&integer);
+    output[i] = integer;
+    printf("array: %lf\n",array[i]);
+    *p++:
+  }
+  return output;
+}
+
+double* get_both_parts(double *array, int length, double **frac_part_ptr){
+}
+
+
 
 
 void test_get_both_parts()
