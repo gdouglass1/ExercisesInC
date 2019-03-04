@@ -23,6 +23,7 @@ by setting the pointer it got as an argument.
 #include <stdlib.h>
 #include <math.h>
 #include <assert.h>
+#include <string.h>
 
 /* get_int_part: Compute the integer part of the elements in an array.
 
@@ -33,16 +34,27 @@ returns: new array, caller must free
 */
 // TODO: Write this function
 
+// double* get_int_part(double array[], int length){ //don't copy array, pass by pointer
+//   double *output;
+//   double integer;
+//   output = (double *)malloc(length*sizeof(double));
+//   for (int i = 0; i<length; i++){
+//     modf(array[i],&integer);
+//     //printf("array: %lf\n",array[i]);
+//     output[i] = integer;
+//   }
+//   return output;
+// }
+
 double* get_int_part(double array[], int length){
-  double *output;
-  double integer;
-  output = (double *)malloc(length*sizeof(double));
-  for (int i = 0; i<length; i++){
-    modf(array[i],&integer);
-    //printf("array: %lf\n",array[i]);
-    output[i] = integer;
+  double *res = malloc(length * sizeof(double));
+  //double intpart;
+
+  for(int i=0; i<length;i++){
+    modf(array[i],res+i);
+    // res[i] = intpart;
   }
-  return output;
+  return res;
 }
 
 void test_get_int_part()
@@ -55,7 +67,7 @@ void test_get_int_part()
 
     for (int i=0; i<length; i++) {
         //printf("%lf\n", result[i]);
-        assert(int_part[i] == expected[i]);
+        assert(abs(int_part[i] - expected[i])<1e-8);
     }
 }
 
@@ -70,27 +82,18 @@ returns: new array, caller must free
 */
 //TODO: Write this function
 
-double* get_both_parts(double array[], int length, double **p){
+double* get_both_parts(double *array, int length, double **frac_part_ptr){
   double *output;
-  double integer;r);
-    output[i] = integer;
-    printf("array: %lf\n",array[i]);
-    *p++:
-  }
+  double integer;
+  double frac_array[length];
   for(int i = 0; i<length; i++){
-    **p = modf(array[i],&integer);
+    frac_array[i] = modf(array[i],&integer);
     output[i] = integer;
     printf("array: %lf\n",array[i]);
-    *p++:
   }
+  *frac_part_ptr = strdup(frac_array);
   return output;
 }
-
-double* get_both_parts(double *array, int length, double **frac_part_ptr){
-}
-
-
-
 
 void test_get_both_parts()
 {
