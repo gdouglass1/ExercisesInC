@@ -44,7 +44,7 @@ void test_point_in_rect(Point *point, Rectangle *rectangle)
     printf("%s %s %s\n", p_str, res, r_str);
 }
 
-void main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
     test_point();
     test_rectangle();
@@ -62,4 +62,5 @@ void main (int argc, char *argv[])
     free_point(corner);
     free_point(point2);
     free_rectangle(rectangle);
+    return 0;
 }
