@@ -143,7 +143,7 @@ int hash_int(void *p)
 *
 * returns: integer hash value
 */
-int hash_string(void *p)
+int hash_string1(void *p)
 {
     char *s = (char *) p;
     int total = 0;
@@ -155,6 +155,25 @@ int hash_string(void *p)
     }
     return total;
 }
+
+/* Hashes a string.
+* method found from http://www.cse.yorku.ca/~oz/hash.html
+* p: pointer to first char of a string
+*
+* returns: integer hash value
+*/
+int hash_string(void *p)
+ {
+     int hash = 5381;
+     char *str = (char *) p;
+     int c;
+
+     while ((c = *str++))
+         hash = hash*33 + c; /* ((hash << 5) + hash) + c */
+    // printf("key:%s\n",str);
+    // printf("code:%d\n",(int)hash);
+     return (int)hash;
+ }
 
 
 /* Hashes any Hashable.
@@ -179,6 +198,11 @@ int hash_hashable(Hashable *hashable)
 int equal_int (void *ip, void *jp)
 {
     // FILL THIS IN!
+    int i = *(int *)ip;
+    int p = *(int *)jp;
+    if(i == p){
+      return 1;
+    }
     return 0;
 }
 
@@ -193,6 +217,10 @@ int equal_int (void *ip, void *jp)
 int equal_string (void *s1, void *s2)
 {
     // FILL THIS IN!
+    char *ret = strstr((char *)s1, (char *)s2);
+    if(ret!=NULL){
+      return 1;
+    }
     return 0;
 }
 
@@ -208,7 +236,7 @@ int equal_string (void *s1, void *s2)
 int equal_hashable(Hashable *h1, Hashable *h2)
 {
     // FILL THIS IN!
-    return 0;
+    return h1->equal(h1->key,h2->key);
 }
 
 
@@ -297,7 +325,16 @@ Node *prepend(Hashable *key, Value *value, Node *rest)
 Value *list_lookup(Node *list, Hashable *key)
 {
     // FILL THIS IN!
-    return NULL;
+    if (list == NULL) {
+        return NULL;
+    }
+    int ret = equal_hashable(list->key,key);
+    if(ret == 1){
+      return list->value;
+    }
+    else{
+      return list_lookup(list->next,key);
+    }
 }
 
 
@@ -342,6 +379,9 @@ void print_map(Map *map)
 void map_add(Map *map, Hashable *key, Value *value)
 {
     // FILL THIS IN!
+    int index = hash_hashable(key) % map->n;
+    //printf("index:%d\n",index);
+    map->lists[index] = prepend(key,value,map->lists[index]);
 }
 
 
@@ -349,7 +389,8 @@ void map_add(Map *map, Hashable *key, Value *value)
 Value *map_lookup(Map *map, Hashable *key)
 {
     // FILL THIS IN!
-    return NULL;
+    int index = hash_hashable(key) % map->n;
+    return list_lookup(map->lists[index],key);
 }
 
 
