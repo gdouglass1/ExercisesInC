@@ -83,7 +83,7 @@ int main(int argc, char *argv[]){
   size_t len = 0;
   GHashTable *hash = g_hash_table_new_full(g_str_hash, g_str_equal, free_data,free_data);
 
-
+  // prompt user to type a file name
   if (argc != 2) {
       fprintf(stderr, "Usage: %s <file>\n", argv[0]);
       exit(EXIT_FAILURE);
