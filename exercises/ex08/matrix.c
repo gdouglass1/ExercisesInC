@@ -1,8 +1,6 @@
 /* Example code for Exercises in C.
-
 Copyright 2016 Allen Downey
 License: Creative Commons Attribution-ShareAlike 3.0
-
 */
 
 #include <stdio.h>
@@ -31,6 +29,11 @@ Matrix *make_matrix(int num_rows, int num_cols) {
 */
 void free_matrix(Matrix *matrix) {
     // TODO: Fill this in.
+    for(int k = 0; k < matrix->num_rows;k++){
+      free(matrix->rows[k]);
+    }
+    free(matrix->rows);
+    free(matrix);
 }
 
 /* Print a row of a matrix.
@@ -51,12 +54,16 @@ void print_matrix(Matrix *matrix) {
 }
 
 /* Perform row reduction.
-
 Subtract a multiple of row j from row i so that the first element
 of row i is 0.
 */
 void reduce_matrix_rows(Matrix *matrix, int i, int j) {
     // TODO: Fill this in.
+    double row_i_first = *(matrix->rows[i]);
+    double row_j_first = *(matrix->rows[j]);
+    for(int k = 0; k < matrix->num_cols;k++){
+      matrix->rows[i][k] -= matrix->rows[j][k] / row_j_first * row_i_first;
+    }
 }
 
 int main () {
