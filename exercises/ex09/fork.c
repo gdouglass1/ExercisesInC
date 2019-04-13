@@ -3,6 +3,47 @@
 Copyright 2016 Allen B. Downey
 License: MIT License https://opensource.org/licenses/MIT
 
+HW:
+
+* When removing the exit after child_code(), the child process never terminates
+and start running the rest of the code copied from parent process:
+
+Creating child 0.
+Hello from the parent.
+Hello from child 0.
+child heap: 2
+Hello from the parent.
+wait failed: No child processes
+./fork: No child processes
+Child 6928 exited with error code 1.
+parent: heap: 1
+Elapsed time = 0.000755 seconds.
+
+* Parent and child process does not share heap, global, static or stack.
+In Linux a technique called copy-on-write is used, due to this the parent
+and child share a single copy of the process address space. If any attempt to
+write into the process address space is made by any of the two processes then a
+separate copy is created for that process and now no longer they share the same address space.
+This technique is used mostly because it prevents the wastage of copying large
+amount of data as many times the exec() system call is used by the child
+process to create an altogether different process.
+
+Creating child 0.
+Hello from the parent.
+Hello from child 0.
+child heap: 2
+child global: 2
+child stack: 2
+Child 7723 exited with error code 0.
+parent: heap: 1
+parent: global: 1
+parent: stack: 1
+Elapsed time = 0.000725 seconds.
+
+
+*
+
+
 */
 
 #include <stdio.h>
@@ -18,6 +59,9 @@ License: MIT License https://opensource.org/licenses/MIT
 // errno is an external global variable that contains
 // error information
 extern int errno;
+
+int global_message = 1;
+int* heap_message;
 
 
 // get_seconds returns the number of seconds since the
@@ -46,6 +90,11 @@ int main(int argc, char *argv[])
     double start, stop;
     int i, num_children;
 
+    heap_message = (int*)malloc(1*sizeof(int));
+    *heap_message = 1;
+    int stack_message = 1;
+    static int static_message = 1;
+
     // the first command-line argument is the name of the executable.
     // if there is a second, it is the number of children to create.
     if (argc == 2) {
@@ -73,6 +122,14 @@ int main(int argc, char *argv[])
         /* see if we're the parent or the child */
         if (pid == 0) {
             child_code(i);
+            (*heap_message)++;
+            printf("child heap: %d\n", *heap_message);
+            global_message++;
+            printf("child global: %d\n", global_message);
+            stack_message++;
+            printf("child stack: %d\n", stack_message);
+            static_message++;
+            printf("child static: %d\n", static_message);
             exit(i);
         }
     }
@@ -93,6 +150,13 @@ int main(int argc, char *argv[])
         status = WEXITSTATUS(status);
         printf("Child %d exited with error code %d.\n", pid, status);
     }
+
+    printf("parent: heap: %d\n", *heap_message);
+    printf("parent: global: %d\n", global_message);
+    printf("parent: stack: %d\n", stack_message);
+    printf("parent: static: %d\n", static_message);
+
+
     // compute the elapsed time
     stop = get_seconds();
     printf("Elapsed time = %f seconds.\n", stop - start);
