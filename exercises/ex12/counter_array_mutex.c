@@ -12,6 +12,17 @@ real	0m0.203s
 user	0m0.257s
 sys	0m0.132s
 
+time ./counter_array
+
+real	0m0.088s
+user	0m0.156s
+sys	0m0.004s
+
+
+difference in real: 0.115s
+difference in user: 0.101s
+difference in sys: 0.128s
+
 */
 
 #include <stdio.h>
