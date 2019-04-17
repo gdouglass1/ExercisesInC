@@ -1,7 +1,14 @@
 /* Example code for Think OS.
-
 Copyright 2014 Allen Downey
 License: GNU GPLv3
+*/
+
+/*
+time ./counter_array
+
+real	0m0.088s
+user	0m0.156s
+sys	0m0.004s
 
 */
 
