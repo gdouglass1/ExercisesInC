@@ -149,33 +149,43 @@ int main(int argc, char *argv[])
     if (listen(listener_d, 10) == -1)
         error("Can't listen");
 
-
-
     while (1) {
         printf("Waiting for connection on port %d\n", port);
         int connect_d = open_client_socket();
 
-        if (say(connect_d, intro_msg) == -1) {
-            close(connect_d);
-            continue;
+        if(!fork()){
+          close(listener_d);
+          if (say(connect_d, intro_msg) == -1) {
+              close(connect_d);
+              continue;
+          }
+
+          read_in(connect_d, buf, sizeof(buf));
+          // TODO (optional): check to make sure they said "Who's there?"
+          if(strncasecmp("Who's there?",buf,12) != 0){
+            say(connect_d,"You should say 'Who's there?'!");
+          }
+          else{
+            if (say(connect_d, "Surrealist giraffe.\n") == -1) {
+                close(connect_d);
+                continue;
+            }
+            read_in(connect_d, buf, sizeof(buf));
+            // TODO (optional): check to make sure they said "Surrealist giraffe who?"
+            char* message = "Surrealist giraffe who?";
+            if(strncasecmp(message,buf,sizeof(message)) != 0){
+              say(connect_d,"You should say 'Surrealist giraffe who?'!\r\n");
+            }
+            else{
+              if (say(connect_d, "Bathtub full of brightly-colored machine tools.\n") == -1) {
+                  close(connect_d);
+                  continue;
+              }
+            }
+          }
+          close(connect_d);
+          exit(0);
         }
-
-        read_in(connect_d, buf, sizeof(buf));
-        // TODO (optional): check to make sure they said "Who's there?"
-
-        if (say(connect_d, "Surrealist giraffe.\n") == -1) {
-            close(connect_d);
-            continue;
-        }
-
-        read_in(connect_d, buf, sizeof(buf));
-        // TODO (optional): check to make sure they said "Surrealist giraffe who?"
-
-        if (say(connect_d, "Bathtub full of brightly-colored machine tools.\n") == -1) {
-            close(connect_d);
-            continue;
-        }
-
         close(connect_d);
     }
     return 0;
