@@ -14,6 +14,7 @@ Note: this version leaks memory.
 #include <stdlib.h>
 #include <glib.h>
 #include <glib/gstdio.h>
+#include <string.h>
 
 /* Represents a word-frequency pair. */
 typedef struct {
@@ -72,6 +73,11 @@ void incr(GHashTable* hash, gchar *key)
     }
 }
 
+void free_data(gpointer data){
+  memset(data,0,sizeof(*data));
+  free(data);
+}
+
 int main(int argc, char** argv)
 {
     gchar *filename;
@@ -93,17 +99,18 @@ int main(int argc, char** argv)
     (one-L) NUL terminated strings */
     gchar **array;
     gchar line[128];
-    GHashTable* hash = g_hash_table_new(g_str_hash, g_str_equal);
+    GHashTable* hash = g_hash_table_new_full(g_str_hash, g_str_equal,free_data,free_data);
 
     // read lines from the file and build the hash table
     while (1) {
         gchar *res = fgets(line, sizeof(line), fp);
         if (res == NULL) break;
-
         array = g_strsplit(line, " ", 0);
         for (int i=0; array[i] != NULL; i++) {
             incr(hash, array[i]);
+            free(array[i]);
         }
+        free(array);
     }
     fclose(fp);
 
@@ -111,7 +118,7 @@ int main(int argc, char** argv)
     // g_hash_table_foreach(hash, (GHFunc) kv_printor, "Word %s freq %d\n");
 
     // iterate the hash table and build the sequence
-    GSequence *seq = g_sequence_new(NULL);
+    GSequence *seq = g_sequence_new(free_data);
     g_hash_table_foreach(hash, (GHFunc) accumulator, (gpointer) seq);
 
     // iterate the sequence and print the pairs
@@ -120,6 +127,7 @@ int main(int argc, char** argv)
     // try (unsuccessfully) to free everything
     g_hash_table_destroy(hash);
     g_sequence_free(seq);
+    //free(array);
 
     return 0;
 }

@@ -172,10 +172,19 @@ Node *make_something() {
     Node *node3 = make_node(3, NULL);
 
     int val = pop(&node1);
+    free(node1);
     push(&node2, val);
     node3->next = node2;
-
     return node3;
+}
+
+void free_list(Node **list){
+  Node *current = *list;
+  while(current != NULL){
+    Node *next = current->next;
+    free(current);
+    current = next;
+  }
 }
 
 
@@ -205,9 +214,12 @@ int main() {
     // add an element to the empty list
     insert_by_index(&empty, 1, 0);
     print_list(&empty);
+    free(empty);
 
     Node *something = make_something();
-    free(something);
+    free_list(&something);
+    free_list(&test_list);
+    //free(something);
 
     return 0;
 }
