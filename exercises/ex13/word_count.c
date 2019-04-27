@@ -50,9 +50,9 @@ void accumulator(gpointer key, gpointer value, gpointer user_data)
 {
     GSequence *seq = (GSequence *) user_data;
     Pair *pair = g_new(Pair, 1);
-    pair->word = (gchar *) key;
-    pair->freq = *(gint *) value;
 
+    pair->word = g_strdup((gchar *) key);
+    pair->freq = *(gint *) value;
     g_sequence_insert_sorted(seq,
         (gpointer) pair,
         (GCompareDataFunc) compare_pair,
@@ -73,9 +73,19 @@ void incr(GHashTable* hash, gchar *key)
     }
 }
 
+/* Destructor for hash table key and value*/
 void free_data(gpointer data){
   memset(data,0,sizeof(*data));
   free(data);
+}
+
+/*Destructor for sequence pair*/
+void free_pair(gpointer data){
+  Pair *pair = (Pair *)data;
+  memset(pair->word,0,strlen(pair->word));
+  free(pair->word);
+  memset(pair,0,sizeof(*pair));
+  free(pair);
 }
 
 int main(int argc, char** argv)
@@ -118,7 +128,7 @@ int main(int argc, char** argv)
     // g_hash_table_foreach(hash, (GHFunc) kv_printor, "Word %s freq %d\n");
 
     // iterate the hash table and build the sequence
-    GSequence *seq = g_sequence_new(free_data);
+    GSequence *seq = g_sequence_new(free_pair);
     g_hash_table_foreach(hash, (GHFunc) accumulator, (gpointer) seq);
 
     // iterate the sequence and print the pairs
