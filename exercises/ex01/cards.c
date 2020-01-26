@@ -1,40 +1,57 @@
 #include <stdio.h>
 #include <stdlib.h>
-int main()
-{
+char getCard(){
   char card_name[3];
-  int count = 0;
-  do{
-    puts("Enter the card_name: ");
-    scanf("%2s", card_name);
-    int val = 0;
-    switch(card_name[0]) {
+  puts("Enter the card_name: ");
+  scanf("%2s", card_name);
+  return card_name[0];
+}
+int checkLetters(char cn){
+  int i= atoi(&cn);
+  int v= 0;
+  switch(cn) {
       case 'K':
       case 'Q':
       case 'J':
-        val = 10;
+        v = 10;
+        return v; 
         break;
       case 'A':
-        val = 11;
+        v = 11;
+        return v; 
         break;
       case 'X':
-        continue;
-      default:
-        val = atoi(card_name);
-        if((val<1) || (val >10)){
-          puts("I don't understand that value!");
-          continue;
-        }
-    }
-    if ((val> 2) && (val <7)){
-      count++;
-    }
-    else if (val == 10){
-      count--;
+        break;
+  }
+  if( (i<1) || (i>10)){
+    puts("I don't understand that value!");
+    v= 0;
+    return v;
+  }
+  return v;
+}
+int checkNumbers(char cn){
+  int c=0; 
+  if ((cn> 2) && (cn <11)){
+    c++;
+    return c;
+  }
+  return c; 
+}
+int main(){
+  int count = 0;
+  char cardName= getCard();
+
+  while (cardName != 'X'){
+    int val = 0;
+    val= checkLetters(cardName);
+    count+= val;
+    if (val==0){
+      count += checkNumbers(atoi(&cardName));
     }
     printf("Current count: %i\n", count);
+    cardName= getCard();
+
   }
-  while (card_name[0] != 'x');
-    return 0;
-  
+return 0;
 }
