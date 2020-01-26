@@ -21,7 +21,7 @@ int main()
         continue;
       default:
         val = atoi(card_name);
-        if((val<1) || (val >0)){
+        if((val<1) || (val >10)){
           puts("I don't understand that value!");
           continue;
         }
