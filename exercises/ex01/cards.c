@@ -15,13 +15,14 @@ char * getCard(){
   return card_name;
 }
 
-/* Evaluates card that user input (card_name) to determine the value. 
+/* Evaluates card that user input (card_name) to determine the value if it's a letter. 
        Returns int value of card if a valid card (1-10, J, Q, K, A).
-       Prints "I don't understand value" if input isn't valid card.
        If user inputs 'X', program will stop.
        cn: card that user input
+       val: value of the letter of the card
+
 */
-int check(char * cn){
+int checkLetters(char * cn){
   int val = 0;
   switch(cn[0]) {
     case 'K':
@@ -35,16 +36,28 @@ int check(char * cn){
     case 'X':
       break;
     default:
-      val = atoi(cn);
-      if((val<1) || (val >10)){
-        puts("I don't understand that value!");
-        val=0;
-        break;
-      }
+      val=0;
+      break;
   }
   return val;
 }
-/* Main function will call on getCard() to ask the user to input card then call on check() to evaluate card value. Will output current count of all the cards the user has entered. 
+
+/* Evaluates card that user input (card_name) to determine the value if it's a number. 
+       Returns int value of card if a valid card (1-10, J, Q, K, A).
+       Prints "I don't understand value" if input isn't valid card.
+       val: value of the letter of the card
+*/
+int checkNumbers(char * cn){
+  int val= 0;
+  val = atoi(cn);
+  if((val<1) || (val >10)){
+    puts("I don't understand that value!");
+    val=0;  
+  }
+  return val;
+}
+
+/* Main function will call on getCard() to ask the user to input card then call on checkLetters() and checkNumbers() to evaluate card value. Will output current count of all the cards the user has entered. 
        Program will run as long as user does not input 'X'.
        Calls on functions getCard() and check().
 */
@@ -54,7 +67,9 @@ int main(){
 
   while (cardName[0] != 'X'){
     int v = 0;
-    v= check(cardName);
+    v= checkLetters(cardName);
+    count+= v;
+    v= checkNumbers(cardName);
     count+= v;
     printf("Current count: %i\n", count);
     cardName= getCard();
