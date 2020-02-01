@@ -1,8 +1,6 @@
 /* Example code for Think OS.
-
 Copyright 2014 Allen Downey
 License: GNU GPLv3
-
 */
 
 #include <stdio.h>
@@ -14,7 +12,7 @@ int *foo() {
     int i;
     int array[SIZE];
 
-    printf("%p\n", array);
+    //printf("%p\n", array);
 
     for (i=0; i<SIZE; i++) {
         array[i] = 42;
@@ -26,7 +24,7 @@ void bar() {
     int i;
     int array[SIZE];
 
-    printf("%p\n", array);
+    //printf("%p\n", array);
 
     for (i=0; i<SIZE; i++) {
         array[i] = i;
