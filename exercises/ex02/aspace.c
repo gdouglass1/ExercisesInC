@@ -9,11 +9,15 @@ License: GNU GPLv3
 #include <stdlib.h>
 
 int var1;
-
+void printAddress(int var){
+  printf("Address of local variable is %d\n", var);
+  return;
+}
 int main ()
 {
     int var2 = 5;
     void *p = malloc(128);
+    void *e = malloc(128);
     char *s = "Hello, World";
 
     printf ("Address of main is %p\n", main);
@@ -22,5 +26,6 @@ int main ()
     printf ("p points to %p\n", p);
     printf ("s points to %p\n", s);
 
+    printAddress(var2);
     return 0;
 }
