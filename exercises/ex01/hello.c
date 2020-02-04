@@ -1,29 +1,17 @@
 #include <stdio.h>
-void checkOddEven(int a, int b){
-  int c = a + b;
-    printf("c is %d\n", c);
-    /* if (c%2 == 0) {
-        printf("c is even\n");
-    } 
-    else {
-        printf("c is odd\n");
-    } */
-    int z= c%2;
-    switch(z){
-      case 0:
-        printf("c is even\n");
-        break;
-      default:
-        printf("c is odd\n");
-        break;
-    }
-}
 
 int main() {
+    int x = 5;
+    int y = x + 1;
     printf("Hello, World!\n");
-    int a = 3;
-    int b = 4;
-
-    checkOddEven(a, b);
+    printf("y is %d\n",y);
     return 0;
 }
+
+/*
+1.  subq $16, %rsp 
+    movl $5, -8(%rbp)
+2. The lines disappear when you turn on optimization using the flag -02. 
+3. %es and Movl $5 is added.
+4. Optimization decreases the runtime because the code size gets smaller.  
+ */
