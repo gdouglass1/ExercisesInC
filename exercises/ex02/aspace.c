@@ -10,7 +10,7 @@ License: GNU GPLv3
 
 int var1;
 void printAddress(int var){
-  printf("Address of local variable is %d\n", var);
+  printf("Address of local variable is %p\n", &var);
   return;
 }
 int main ()
@@ -18,6 +18,14 @@ int main ()
     int var2 = 5;
     void *p = malloc(128);
     void *e = malloc(128);
+    /*Heap grows up towards larger addresses.*/
+
+    void *a = malloc(10);
+    void *b = malloc(10);
+    printf ("a points to %p\n", a);
+    printf ("b points to %p\n", b);
+    /* The space between them is 0x20 or 20 bytes*/
+
     char *s = "Hello, World";
 
     printf ("Address of main is %p\n", main);
@@ -27,5 +35,6 @@ int main ()
     printf ("s points to %p\n", s);
 
     printAddress(var2);
+    /*stack grows downwards toward lower addresses.*/
     return 0;
 }
