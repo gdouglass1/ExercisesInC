@@ -28,10 +28,10 @@ int checkLetters(char * cn){
     case 'K':
     case 'Q':
     case 'J':
-      val = 10;
+      val = 1;
       break;
     case 'A':
-      val = 11;
+      val = 1;
       break;
     case 'X':
       break;
@@ -53,8 +53,13 @@ int checkNumbers(char * cn){
   if((val<1) || (val >10)){
     puts("I don't understand that value!");
     val=0;  
+    return val;
   }
-  return val;
+  else if((val>=1) || (val <=10)){
+    val=1;
+    return val;   
+  }
+  return 0;
 }
 
 /* Main function will call on getCard() to ask the user to input card then call on checkLetters() and checkNumbers() to evaluate card value. Will output current count of all the cards the user has entered. 
@@ -69,8 +74,10 @@ int main(){
     int v = 0;
     v= checkLetters(cardName);
     count+= v;
+    if(v!=1){
     v= checkNumbers(cardName);
     count+= v;
+    }
     printf("Current count: %i\n", count);
     cardName= getCard();
 
