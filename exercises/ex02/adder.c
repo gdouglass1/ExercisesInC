@@ -1,4 +1,4 @@
-/* Gia Douglass
+/* Gia Douglass, collaborated with Nikhil
 Program that counts the value of a max of 9 numbers entered
 */
 #include <stdio.h>
