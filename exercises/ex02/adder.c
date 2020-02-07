@@ -8,31 +8,40 @@ int getInput(){
   int number;
   puts("Enter a number: ");
   scanf("%2s", str);
+  switch(str[0]) {
+    case 'X':
+    return -9;
+    break;
+  }
   number = atoi(str);
+  if(number == 0){
+    printf("ERROR: Plese enter a valid number \n");
+    getInput();
+    return number;
+  } 
   return number;
 }
 
-int addArray(int *integers){
+int addArray(int *integers, int c){
   int sum = 0;
-  for (int i = 0; i < (10); i++){
+  for (int i = 0; i < (c); i++){
     sum += integers[i];
   }
   return sum;
 }
 
 int main(){
+   printf("You can only enter 9 numbers and each number must be less than three digits and positive (1-99).\n");
   int total=0;
-  printf("You can only enter 10 numbers and each number must be less than three digits and positive (0-99).\n");
   int maxLength = 10;
   int integers[maxLength];
   int counter = 0;
   int numb;
-  //int flag = 0;
-
   numb = getInput();
-  while (numb != EOF){
-    if (counter > maxLength - 2){ /* Stop asking for user input when integer array is full*/
-      printf("You've entered more than the max of 10 numbers.\n");
+
+  while (numb!= 'X' && numb != -9){
+    if (counter > maxLength - 1){ /* Stop asking for user input when integer array is full*/
+      printf("You've entered more than the max of 9 numbers.\n");
       break;
     }
     else{
@@ -41,7 +50,7 @@ int main(){
     numb = getInput();
     }
   }
-  total= addArray(integers);
+  total= addArray(integers, counter);
   printf("The sum of every number you have entered is %i", total);
   
 }
