@@ -1,12 +1,3 @@
-/* Example code for Exercises in C.
-
-Based on an example from http://www.learn-c.org/en/Linked_lists
-
-Copyright 2016 Allen Downey
-License: Creative Commons Attribution-ShareAlike 3.0
-
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -65,7 +56,9 @@ int pop(Node **list) {
 * val: value to add
 */
 void push(Node **list, int val) {
-    // FILL THIS IN!
+    Node *beg = make_node(val, *list);
+    *list = beg;
+
 }
 
 
@@ -79,8 +72,21 @@ void push(Node **list, int val) {
 * returns: number of nodes removed
 */
 int remove_by_value(Node **list, int val) {
-    // FILL THIS IN!
+  Node *original = *list;
+  Node *newN = NULL;
+  while((original!=NULL)&&(original->val!= val)){
+    newN = original;
+    original = original->next;
+  }
+  if(original != NULL){
+    newN->next = original->next;
+  }
+  else{
     return 0;
+  }
+  free(original);
+  return 1;
+  
 }
 
 
@@ -92,6 +98,17 @@ int remove_by_value(Node **list, int val) {
 */
 void reverse(Node **list) {
     // FILL THIS IN!
+  Node *original = *list;
+  Node *prev = NULL;
+  Node *next = original->next;
+  while((next!=NULL)){
+    original->next= prev;
+    original= original;
+    original= next;
+    next = next->next;
+  }
+  original->next = prev;
+  *list = original;
 }
 
 
