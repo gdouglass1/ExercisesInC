@@ -178,7 +178,10 @@ int hash_hashable(Hashable *hashable)
 */
 int equal_int (void *ip, void *jp)
 {
-    // FILL THIS IN!
+   int i = *(int *)ip;
+    int p = *(int *)jp;
+    if(i == p){
+      return 1;}
     return 0;
 }
 
@@ -192,7 +195,9 @@ int equal_int (void *ip, void *jp)
 */
 int equal_string (void *s1, void *s2)
 {
-    // FILL THIS IN!
+   char *ret = strstr((char *)s1,(char *)s2);
+    if(ret!=NULL){
+      return 1;}
     return 0;
 }
 
