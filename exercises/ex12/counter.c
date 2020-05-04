@@ -5,11 +5,29 @@ License: GNU GPLv3
 
 */
 
+/*
+Answer to question 3: Increase the number of children to 10
+counter = 0
+counter = 0
+counter = 0
+counter = 0
+counter = 4
+counter = 5
+counter = 1
+counter = 1
+counter = 7
+counter = 9
+Final value of counter is 10
+
+The threads are running concurrently because the order of event running cannot
+be determined from looking at the program.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 
-#define NUM_CHILDREN 5
+#define NUM_CHILDREN 10
 
 /* Print an error message and exit.
 */
